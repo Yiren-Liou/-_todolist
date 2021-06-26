@@ -11,11 +11,11 @@
 <body>
   <div class="container vh100">
     <div class="row justify-content-center py-5">
-      <div class="col-md-6">
+      <div class="col col-md-6">
         <h1 class="fs-M fw-bold text-secondary text-center mb-4">TODO LIST</h1>
         <div class="input-group mb-3">
           <input type="text" id="todoItem"class="form-control shadow bg-white" placeholder="新增待辦事項" aria-label="新增待辦事項" aria-describedby="addBtn">
-          <button class="btn bg-white" type="button" id="addBtn">
+          <button class="btn bg-white" type="button" id="addBtn" data-btn='add'>
             <span class="material-icons addBtn rounded p-1">add</span>
           </button>
         </div>
@@ -43,7 +43,7 @@
           </div>
           <div class="d-flex justify-content-between align-items-center px-4 pb-3">
             <p class="fs-S"><span id="uncompletedNum" class="me-1"></span>個待完成項目</p>
-            <button type="button" class="btn cleanBtn fs-S" id="cleanBtn">清除已完成項目</button>
+            <button type="button" class="btn cleanBtn fs-S" id="cleanBtn" data-btn="delAllCompleted">清除已完成項目</button>
           </div>
         </div>
       </div>

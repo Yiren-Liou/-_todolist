@@ -19,3 +19,15 @@
     font-weight: bold;
   }
 }
+
+
+li{
+  .delBtn{
+    opacity: 0;
+  }
+  &:hover{
+    .delBtn{
+      opacity: 1;
+    }
+  }
+}

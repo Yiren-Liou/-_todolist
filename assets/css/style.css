@@ -11959,3 +11959,10 @@ ul {
   border-color: #9F9A91;
   font-weight: bold;
 }
+
+li .delBtn {
+  opacity: 0;
+}
+li:hover .delBtn {
+  opacity: 1;
+}

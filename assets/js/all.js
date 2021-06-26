@@ -5,21 +5,66 @@ const list = document.querySelectorAll('.list');
 const allList = document.querySelector('#allList');
 const uncompletedList = document.querySelector('#uncompletedList');
 const completedList = document.querySelector('#completedList');
-const navCompletedTab = document.querySelector('#nav-completed-tab');
-const navUncompletedTab = document.querySelector('#nav-uncompleted-tab');
 const uncompletedNum = document.querySelector('#uncompletedNum');
+const todoItem = document.querySelector('#todoItem');
 
 addBtn.addEventListener('click', addToList);
-cleanBtn.addEventListener('click', delAllCompleted);
-allList.addEventListener('click', editStatus);
-navCompletedTab.addEventListener('click', getCompleteList);
-navUncompletedTab.addEventListener('click', getUnCompleteList);
+cleanBtn.addEventListener('click', editStatus);
 list.forEach((item) => {
   item.addEventListener('click', editStatus);
 })
 
-const todoList = [];
+let todoList = [];
 init();
+
+function init() {
+  this.renderList();
+}
+
+function renderList() {
+  let allItems = '';
+  let uncompletedItems = '';
+  let completedItems = '';
+  let num = 0;
+  if (todoList.length) {
+    listCard.classList.remove('d-none');
+    todoList.forEach((item, i) => {
+      if (item.isCompleted) {
+        allItems += `
+          <li class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center flex-grow-1">
+              <button type="button" class="material-icons text-primary btn me-3" data-id=${i}>check</button>
+              <del class="border-bottom text-info flex-grow-1 py-3">${item.title}</del>
+            </div>
+            <button type="button" class="material-icons delBtn btn text-dark" data-id=${i} data-btn='del'>close</button>
+          </li>
+        `;
+        completedItems = allItems;
+      } else {
+        uncompletedItems += `
+          <li class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center flex-grow-1">
+              <button type="button" class="checkBtn material-icons btn me-3" data-id=${i} data-btn='check'>check_box_outline_blank</button>
+              <p class="border-bottom flex-grow-1 py-3">${item.title}</p>
+            </div>
+            <button type="button" class="material-icons delBtn btn text-dark" data-id=${i} data-btn='del'>close</button>
+          </li>
+        `;
+        num += 1;
+      }
+    });
+    allItems += uncompletedItems;
+    allList.innerHTML = allItems;
+    completedList.innerHTML = completedItems;
+    uncompletedList.innerHTML = uncompletedItems;
+  } else {
+    allList.innerHTML = '';
+    completedList.innerHTML = '';
+    uncompletedList.innerHTML = '';
+    listCard.classList.add('d-none');
+  }
+  uncompletedNum.textContent = num;
+}
 
 function addToList() {
   let todoItem = document.querySelector('#todoItem');
@@ -32,123 +77,29 @@ function addToList() {
     isCompleted: false,
   };
   todoList.push(tempItem);
-  getAllList();
-  getUnCompleteList();
+  renderList();
   todoItem.value = '';
 }
 
-function getAllList() {
-  let items = '';
-  if (todoList.length) {
-    listCard.classList.remove('d-none');
-    todoList.forEach((item, i) => {
-      if (item.isCompleted) {
-        items += `
-          <li class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center flex-grow-1">
-              <button type="button" class="material-icons text-primary btn me-3" data-id=${i}>check</button>
-              <del class="border-bottom text-info flex-grow-1 py-3">${item.title}</del>
-            </div>
-            <button type="button" class="material-icons btn text-dark" data-id=${i} data-btn='del'>close</button>
-          </li>
-        `;
-      } else {
-        items += `
-          <li class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center flex-grow-1">
-              <button type="button" class="checkBtn material-icons btn me-3" data-id=${i} data-btn='check'>check_box_outline_blank</button>
-              <p class="border-bottom flex-grow-1 py-3">${item.title}</p>
-            </div>
-            <button type="button" class="material-icons btn text-dark" data-id=${i} data-btn='del'>close</button>
-          </li>
-        `;
-      }
-    });
-    allList.innerHTML = items;
-  }else{
-    allList.innerHTML = '';
-    listCard.classList.add('d-none');
-  }
-  getUnCompleteNum();
-}
-
-function getCompleteList() {
-  let items = '';
-  todoList.forEach((item, i) => {
-    if (item.isCompleted) {
-      items += `
-      <li class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center flex-grow-1">
-          <button type="button" class="material-icons text-primary btn me-3" data-id=${i}>check</button>
-          <del class="border-bottom text-info flex-grow-1 py-3">${item.title}</del>
-        </div>
-        <button type="button" class="material-icons btn" data-id=${i} data-btn='del'>close</button>
-      </li>
-      `;
-    }
-  });
-  completedList.innerHTML = items;
-}
-
-function getUnCompleteList() {
-  let items = '';
-  todoList.forEach((item, i) => {
-    if (!item.isCompleted) {
-      items += `
-      <li class="d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center flex-grow-1">
-            <button type="button" class="checkBtn material-icons btn me-3" data-id=${i} data-btn='check'>check_box_outline_blank</button>
-            <p class="border-bottom flex-grow-1 py-3">${item.title}</p>
-          </div>
-          <button type="button" class="material-icons btn" data-id=${i} data-btn='del'>close</button>
-        </li>
-      `;
-    }
-  });
-  uncompletedList.innerHTML = items;
-  getUnCompleteNum();
-}
-
-function getUnCompleteNum() {
-  let num = 0;
-  todoList.forEach((item, i) => {
-    if (!item.isCompleted) {
-      num += 1;
-    }
-  });
-  uncompletedNum.textContent = num;
-}
-
-function editStatus(e){
+function editStatus(e) {
   const delId = e.target.getAttribute('data-id');
-  switch (e.target.getAttribute('data-btn')){
+  switch (e.target.getAttribute('data-btn')) {
     case 'check':
       todoList[delId].isCompleted = true;
       break;
     case 'del':
       todoList.splice(delId, 1);
       break;
+    case 'delAllCompleted': 
+      let notDelList = [];
+      todoList.forEach((item, i) => {
+        if (!item.isCompleted) {
+          notDelList.push(item);
+        }
+      });
+      todoList = notDelList;
+      break;
   }
-  getAllList();
+  renderList();
 }
 
-function delAllCompleted(){
-  todoList.forEach((item, i) => {
-    if (item.isCompleted) {
-      let delId = i;
-      todoList.splice(delId, 1);
-    }
-  });
-  getAllList();
-  getCompleteList();
-}
-
-
-
-
-
-
-
-function init() {
-  this.getAllList();
-}
