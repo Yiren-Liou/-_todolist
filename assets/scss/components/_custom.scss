@@ -1,0 +1,21 @@
+.addBtn{
+  color: #fff;
+  background-color: $secondary;
+  border: 2px solid $secondary;
+  transition: .3s;
+  &:hover {
+    color: $secondary;
+    background-color: #fff;
+    font-weight: bold;
+  }
+}
+
+.cleanBtn{
+  color: $light;
+  border: 2px solid transparent;
+  transition: .3s;
+  &:hover {
+    border-color: $light;
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,15 @@
+body{
+  background-image: linear-gradient(174deg, #FFD370 2%, #FFD370 46%, #FFFFFF 46%, #FFFFFF 100%, #E8E8E8 100%);
+}
+
+h1,h2,h3,h4,h5,h6,p{
+  line-height: 1.5;
+  color: $secondary;
+  font-size: $font-size-base;
+  margin-bottom: 0;
+}
+
+ul{
+  list-style: none;
+  padding-left: 0; 
+}
